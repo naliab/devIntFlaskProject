@@ -1,0 +1,41 @@
+.user-avatar {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+}
+
+.account-btn {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+}
+
+.current-avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.current-avatar > img {
+    width: 96px;
+    height: 96px;
+}
+
+.reg-actions {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+input[type=text]:not(.browser-default):focus:not([readonly]) {
+    border-bottom: #9c27b0;
+    box-shadow: 0 1px 0 0 #9c27b0;
+}
+
+input[type=password]:not(.browser-default):focus:not([readonly]) {
+    border-bottom: #9c27b0;
+    box-shadow: 0 1px 0 0 #9c27b0;
+}

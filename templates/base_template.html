@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+    <link rel="stylesheet" href="/static/css/materialize.min.css">
+    <link href="/static/css/icon.css" rel="stylesheet">
+    <title>{% block page_title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/base_template.css"/>
+    {% block styles %}{% endblock %}
+</head>
+
+<body class="grey lighten-3">
+<ul id="categories_dropdown" class="dropdown-content grey lighten-5">
+    <li><a href="/topic/1/" class="purple-text">Базы данных</a></li>
+    <li><a href="/topic/2/" class="purple-text">КХД</a></li>
+    <li><a href="/topic/3/" class="purple-text">Озера данных</a></li>
+    <li><a href="/ml/" class="purple-text">ML</a></li>
+</ul>
+
+
+<ul id="account_menu" class="dropdown-content grey lighten-5">
+    <li><a class="modal-trigger purple-text" href="#uploadavatar">Сменить аватарку</a></li>
+    <li><a href="/logout" class="purple-text">Выйти из аккаунта</a></li>
+</ul>
+
+<div class="modal grey lighten-5" id="loginModal">
+    <form id="loginModalForm" method="POST" class="modal_form">
+        <div class="modal-content black-text">
+            <h4>Авторизация</h4>
+            <input type="text" placeholder="Логин" name="username" autofocus autocapitalize="none"
+                   autocomplete="username" maxlength="150" required class="black-text">
+            <input type="password" placeholder="Пароль" name="password" autocomplete="current-password"
+                   required class="black-text">
+            <div class="reg-actions">
+                <div id="login_error_txt" class="red-text"></div>
+                <button class="btn purple white-text" type="submit">Войти</button>
+                <a href="/login/" class="purple-text">Уйти на отдельную страницу</a>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal grey lighten-5" id="registerModal">
+    <form id="registerModalForm" method="POST">
+        <div class="modal-content black-text">
+            <h4>Регистрация</h4>
+            <input type="text" placeholder="Логин" name="username" maxlength="150" autocapitalize="none"
+                   autocomplete="username" autofocus required class="black-text"/>
+            <input type="password" placeholder="Пароль" name="password1" autocomplete="new-password"
+                   required class="black-text"/>
+            <input type="password" placeholder="Повторите пароль" name="password2"
+                   autocomplete="new-password" required class="black-text"/>
+            <div class="reg-actions">
+                <div id="reg_error_txt" class="red-text"></div>
+                <button class="btn purple white-text" type="submit">Зарегистрироваться!</button>
+                <a href="/register/" class="purple-text">Уйти на отдельную страницу</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="uploadavatar" class="modal grey lighten-5">
+    <form id="avatar_form" method="POST" action="/upload_avatar/" enctype="multipart/form-data">
+        <div class="modal-content black-text">
+            <div class="current-avatar">
+                <img src=""/>
+                <div class="black-text">Отлично выглядите, !</div>
+            </div>
+            <div class="file-field input-field">
+                <div class="btn white-text purple">
+                    <span class="hide-on-small-only">Загрузить новую</span>
+                    <span class="hide-on-med-and-up">Новая</span>
+                    <input type="file" name="avatar" required accept="image/*"/>
+                </div>
+                <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text"/>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer grey lighten-5">
+            <a id="send_new_avatar_btn"
+               class="modal-close waves-effect waves-yellow btn-flat purple-text">Сохранить</a>
+            <a class="modal-close waves-effect waves-yellow btn-flat purple-text">Отмена</a>
+        </div>
+    </form>
+</div>
+<div class="navbar-fixed">
+    <nav>
+        <div class="nav-wrapper purple">
+            <span class="hide-on-small-only purple-text">__</span>
+            <a href="/" class="brand-logo truncate">Data Analytics</a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li>
+                    {% if false %}
+                        <a class="dropdown-trigger white-text account-btn" data-target="account_menu">
+                            <img src="" class="user-avatar"/>
+                            Привет, <b></b>!<i class="material-icons right">arrow_drop_down</i></a>
+                    {% else %}
+                        <div style="display: flex">
+                            <a class="white-text modal-trigger" href="#loginModal">Войти в аккаунт</a>
+                            <a class="white-text modal-trigger" href="#registerModal">Регистрация</a>
+                        </div>
+                    {% endif %}
+                </li>
+                <li><a class="dropdown-trigger white-text" data-target="categories_dropdown">Разделы<i
+                        class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a class="white-text" href="/about">О сайте</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<ul class="sidenav white lighten-5" id="mobile-demo">
+    {% if false %}
+        <li><a class="purple-text account-btn">
+            <img src="" class="user-avatar"/>
+            <b></b>
+        </a></li>
+        <li>
+            <div class="divider purple"></div>
+        </li>
+        <li><a class="subheader grey-text">Действия с аккаунтом</a></li>
+        <li><a class="modal-trigger purple-text" href="#uploadavatar">Сменить аватарку</a>
+        </li>
+        <li><a href="/logout" class="purple-text">Выйти из аккаунта</a></li>
+    {% else %}
+        <li><a class="purple-text modal-trigger" href="#loginModal">Войти в аккаунт</a></li>
+        <li><a class="purple-text modal-trigger" href="#registerModal">Регистрация</a></li>
+    {% endif %}
+    <li>
+        <div class="divider purple"></div>
+    </li>
+    <li><a class="subheader grey-text">Разделы сайта</a></li>
+    <li><a class="purple-text" href="/topic/1/">Базы данных</a></li>
+    <li><a class="purple-text" href="/topic/2/">Корпоративные хранилища</a></li>
+    <li><a class="purple-text" href="/topic/3/">Озера данных</a></li>
+    <li><a href="/ml/" class="purple-text">ML</a></li>
+    <li><a class="purple-text" href="/about">О сайте</a></li>
+</ul>
+
+<div class="content">
+    {% block page_content %}
+    {% endblock %}
+    {% if false %}
+        <div class="row">
+            <div class="col s12 m6 offset-m3 center-align paginator-block">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}"><i
+                            class="material-icons purple-text page-arrow-btn">arrow_back</i></a>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <span class="white-text text-lighten-3 page-number">{{ num }}</span>
+                    {% else %}
+                        <a href="?page={{ num }}" class="page-number grey-text">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}"><i
+                            class="material-icons purple-text page-arrow-btn">arrow_forward</i></a>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+<script src="/static/js/jquery.slim.min.js"></script>
+<script src="/static/js/materialize.min.js"></script>
+<script src="/static/js/base_template.js"></script>
+{% block scripts %}
+{% endblock %}
+
+</body>
+
+</html>

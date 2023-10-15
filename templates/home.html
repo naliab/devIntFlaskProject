@@ -1,0 +1,23 @@
+{% extends 'base_template.html' %}
+
+{% block page_title %}Поколения аналитических платформ{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="/static/css/home.css"/>
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col s12 m6 offset-m3">
+            <h6 class="purple-text light valign-wrapper">
+                <i class="material-icons small">find_in_page</i><b>Все публикации подряд</b>
+            </h6>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12 m6 offset-m3 black-text center-align">
+            <i class="material-icons large">sentiment_dissatisfied</i>
+            <h5 class="light">Нет публикаций. Здесь пусто...</h5>
+        </div>
+    </div>
+{% endblock %}
