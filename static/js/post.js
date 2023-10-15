@@ -8,10 +8,9 @@ TRANSLATE_BTN.addEventListener('click', function () {
         const headers = new Headers();
         formData.append('txt', ARTICLE_TXT_ELEM.innerHTML);
         formData.append('title', ARTICLE_TITLE_ELEM.textContent);
-        fetch('/translate/', {
-            method: 'POST',
-            headers: headers,
-            body: formData
+        M.toast({html: 'Перевожу на английский...'});
+        fetch('/translate', {
+            method: 'POST', headers: headers, body: formData
         }).then(response => response.json()).then(data => {
             ARTICLE_TXT_ELEM.innerHTML = data.txt_translation;
             ARTICLE_TITLE_ELEM.textContent = data.title_translation;
