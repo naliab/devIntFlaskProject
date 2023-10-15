@@ -1,7 +1,4 @@
 from flask import Flask
-from flask import render_template,flash,redirect,session,request,jsonify
-# from loginform import *
-# from database import *
 
 app = Flask(__name__)
 
