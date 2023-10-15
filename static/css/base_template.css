@@ -39,3 +39,18 @@ input[type=password]:not(.browser-default):focus:not([readonly]) {
     border-bottom: #9c27b0;
     box-shadow: 0 1px 0 0 #9c27b0;
 }
+
+.page-number {
+    vertical-align: middle;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.paginator-block {
+    vertical-align: middle;
+}
+
+.page-arrow-btn {
+    vertical-align: middle;
+    cursor: pointer;
+}

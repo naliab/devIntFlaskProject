@@ -13,10 +13,10 @@
 
 <body class="grey lighten-3">
 <ul id="categories_dropdown" class="dropdown-content grey lighten-5">
-    <li><a href="/topic/1/" class="purple-text">Базы данных</a></li>
-    <li><a href="/topic/2/" class="purple-text">КХД</a></li>
-    <li><a href="/topic/3/" class="purple-text">Озера данных</a></li>
-    <li><a href="/ml/" class="purple-text">ML</a></li>
+    <li><a href="/topic?id=1" class="purple-text">Базы данных</a></li>
+    <li><a href="/topic?id=2" class="purple-text">КХД</a></li>
+    <li><a href="/topic?id=3" class="purple-text">Озера данных</a></li>
+    <li><a href="/ml" class="purple-text">ML</a></li>
 </ul>
 
 
@@ -132,10 +132,10 @@
         <div class="divider purple"></div>
     </li>
     <li><a class="subheader grey-text">Разделы сайта</a></li>
-    <li><a class="purple-text" href="/topic/1/">Базы данных</a></li>
-    <li><a class="purple-text" href="/topic/2/">Корпоративные хранилища</a></li>
-    <li><a class="purple-text" href="/topic/3/">Озера данных</a></li>
-    <li><a href="/ml/" class="purple-text">ML</a></li>
+    <li><a class="purple-text" href="/topic?id=1">Базы данных</a></li>
+    <li><a class="purple-text" href="/topic?id=2">Корпоративные хранилища</a></li>
+    <li><a class="purple-text" href="/topic?id=3">Озера данных</a></li>
+    <li><a href="/ml" class="purple-text">ML</a></li>
     <li><a class="purple-text" href="/about">О сайте</a></li>
 </ul>
 
@@ -147,7 +147,7 @@
         <div class="row">
             <div class="col s12 m6 offset-m3 center-align paginator-block">
                 {% if pagination.has_prev %}
-                    <a href="?page={{ pagination.page - 1 }}"><i
+                    <a onclick="jumpToPage({{ pagination.page - 1 }})"><i
                             class="material-icons purple-text page-arrow-btn">arrow_back</i></a>
                 {% endif %}
 
@@ -155,12 +155,12 @@
                     {% if pagination.page == num %}
                         <span class="purple-text page-number"><b>{{ num }}</b></span>
                     {% else %}
-                        <a href="?page={{ num }}" class="page-number grey-text">{{ num }}</a>
+                        <a onclick="jumpToPage({{ num }})" class="page-number grey-text">{{ num }}</a>
                     {% endif %}
                 {% endfor %}
 
                 {% if pagination.has_next %}
-                    <a href="?page={{ pagination.page + 1 }}"><i
+                    <a onclick="jumpToPage({{ pagination.page + 1 }})"><i
                             class="material-icons purple-text page-arrow-btn">arrow_forward</i></a>
                 {% endif %}
             </div>

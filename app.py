@@ -30,6 +30,20 @@ def post():
     return render_template('post.html', post=post)
 
 
+@app.route('/topic', methods=['GET'])
+def topic():
+    requested_topic_id = request.args.get('id', 1, type=int)
+    current_topic = PostCategory.query.filter_by(id=requested_topic_id).first()
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.filter_by(category=requested_topic_id).all()
+    per_page = 1
+    pagination = Pagination(page=page, total=len(posts), per_page=per_page)
+    start_ind = (page - 1) * per_page
+    end_ind = start_ind + per_page
+    posts_to_render = posts[start_ind:end_ind]
+    return render_template('topic.html', pagination=pagination, posts=posts_to_render, topic=current_topic)
+
+
 @app.route('/about', methods=['GET'])
 def about():
     return render_template('about.html')
