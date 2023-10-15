@@ -36,7 +36,7 @@ def topic():
     current_topic = PostCategory.query.filter_by(id=requested_topic_id).first()
     page = request.args.get('page', 1, type=int)
     posts = Post.query.filter_by(category=requested_topic_id).all()
-    per_page = 1
+    per_page = 2
     pagination = Pagination(page=page, total=len(posts), per_page=per_page)
     start_ind = (page - 1) * per_page
     end_ind = start_ind + per_page
