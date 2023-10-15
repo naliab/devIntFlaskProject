@@ -30,6 +30,11 @@ def post():
     return render_template('post.html', post=post)
 
 
+@app.route('/about', methods=['GET'])
+def about():
+    return render_template('about.html')
+
+
 @app.route('/translate', methods=['POST'])
 def translate():
     target_lang = 'en'
