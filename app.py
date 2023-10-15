@@ -9,7 +9,7 @@ migrate = Migrate(app, db)
 
 
 @app.route('/')
-def hello_world():  # put application's code here
+def hello_world():
     return 'Hello World!'
 
 
