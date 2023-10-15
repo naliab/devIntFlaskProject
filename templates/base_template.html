@@ -142,24 +142,25 @@
 <div class="content">
     {% block page_content %}
     {% endblock %}
-    {% if false %}
+
+    {% if pagination and pagination.total_pages > 1 %}
         <div class="row">
             <div class="col s12 m6 offset-m3 center-align paginator-block">
-                {% if page_obj.has_previous %}
-                    <a href="?page={{ page_obj.previous_page_number }}"><i
+                {% if pagination.has_prev %}
+                    <a href="?page={{ pagination.page - 1 }}"><i
                             class="material-icons purple-text page-arrow-btn">arrow_back</i></a>
                 {% endif %}
 
-                {% for num in page_obj.paginator.page_range %}
-                    {% if page_obj.number == num %}
-                        <span class="white-text text-lighten-3 page-number">{{ num }}</span>
+                {% for num in range(1, pagination.total_pages + 1) %}
+                    {% if pagination.page == num %}
+                        <span class="purple-text page-number"><b>{{ num }}</b></span>
                     {% else %}
                         <a href="?page={{ num }}" class="page-number grey-text">{{ num }}</a>
                     {% endif %}
                 {% endfor %}
 
-                {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}"><i
+                {% if pagination.has_next %}
+                    <a href="?page={{ pagination.page + 1 }}"><i
                             class="material-icons purple-text page-arrow-btn">arrow_forward</i></a>
                 {% endif %}
             </div>

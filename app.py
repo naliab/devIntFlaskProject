@@ -1,6 +1,7 @@
-from flask import Flask
+from flask import Flask, request
 from flask import render_template
 from flask_migrate import Migrate
+from flask_paginate import Pagination
 from database import *
 
 app = Flask(__name__)
@@ -11,7 +12,14 @@ migrate = Migrate(app, db)
 
 @app.route('/')
 def home():
-    return render_template('home.html', posts=Post.query.all())
+    posts = Post.query.all()
+    page = request.args.get('page', 1, type=int)
+    per_page = 3
+    pagination = Pagination(page=page, total=len(posts), per_page=per_page)
+    start_ind = (page - 1) * per_page
+    end_ind = start_ind + per_page
+    posts_to_render = posts[start_ind:end_ind]
+    return render_template('home.html', pagination=pagination, posts=posts_to_render)
 
 
 if __name__ == '__main__':
