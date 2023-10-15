@@ -1,7 +1,10 @@
-from app import db
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 
 
 class Profile(db.Model):
+    __tablename__ = 'profile'
     id = db.Column(db.Integer, primary_key=True)
     user = db.Column(db.String(64), unique=True)
     password = db.Column(db.String(256))
@@ -12,11 +15,13 @@ class Profile(db.Model):
 
 
 class PostCategory(db.Model):
+    __tablename__ = 'postcategory'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64))
 
 
 class Post(db.Model):
+    __tablename__ = 'post'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200))
     category = db.Column(db.Integer, db.ForeignKey("postcategory.id"))
@@ -30,12 +35,12 @@ class MLData(db.Model):
     #     (1, "Мужчина"),
     # ]
     id = db.Column(db.Integer, primary_key=True)
-    age = db.Column(db.Integer, blank=False)
-    sex = db.Column(db.Boolean, blank=False)
-    bmi = db.Column(db.Float, blank=False)
-    children = db.Column(db.Integer, blank=False)
-    smoker = db.Column(db.Boolean, blank=False)
-    charges = db.Column(db.Float, blank=False)
+    age = db.Column(db.Integer)
+    sex = db.Column(db.Boolean)
+    bmi = db.Column(db.Float)
+    children = db.Column(db.Integer)
+    smoker = db.Column(db.Boolean)
+    charges = db.Column(db.Float)
 
     __abstract__ = True
 
