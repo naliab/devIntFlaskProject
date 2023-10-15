@@ -14,10 +14,31 @@
             </h6>
         </div>
     </div>
-    <div class="row">
-        <div class="col s12 m6 offset-m3 black-text center-align">
-            <i class="material-icons large">sentiment_dissatisfied</i>
-            <h5 class="light">Нет публикаций. Здесь пусто...</h5>
+    {% if posts|length > 0 %}
+        {% for post in posts %}
+            <div class="row">
+                <div class="col s12 m6 offset-m3">
+                    <div class="card grey lighten-5">
+                        <div class="card-content black-text">
+                            <span class="card-title">{{ post.title }}</span>
+                            <span class="grey-text">Автор: {{ post.authorParent.user }}</span><br/>
+                            <span class="grey-text">Категория: {{ post.categoryParent.title }}</span>
+                            <br/><br/>
+                            <p>{{ post.body[:250]|replace('\n', '<br>')|safe }}...</p>
+                        </div>
+                        <div class="card-action">
+                            <a class="purple-text">Читать полностью</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="row">
+            <div class="col s12 m6 offset-m3 black-text center-align">
+                <i class="material-icons large">sentiment_dissatisfied</i>
+                <h5 class="light">Нет публикаций. Здесь пусто...</h5>
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}

@@ -27,6 +27,8 @@ class Post(db.Model):
     category = db.Column(db.Integer, db.ForeignKey("postcategory.id"))
     author = db.Column(db.Integer, db.ForeignKey("profile.id"))
     body = db.Column(db.Text)
+    categoryParent = db.relationship('PostCategory', backref='children')
+    authorParent = db.relationship('Profile', backref='children')
 
 
 class MLData(db.Model):

@@ -11,7 +11,7 @@ migrate = Migrate(app, db)
 
 @app.route('/')
 def home():
-    return render_template('home.html', title='Войти')
+    return render_template('home.html', posts=Post.query.all())
 
 
 if __name__ == '__main__':
