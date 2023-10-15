@@ -22,5 +22,12 @@ def home():
     return render_template('home.html', pagination=pagination, posts=posts_to_render)
 
 
+@app.route('/post')
+def post():
+    requested_id = request.args.get('id', 1, type=int)
+    post = Post.query.filter_by(id=requested_id).first()
+    return render_template('post.html', post=post)
+
+
 if __name__ == '__main__':
     app.run()

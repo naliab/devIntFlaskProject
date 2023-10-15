@@ -1,0 +1,42 @@
+{% extends 'base_template.html' %}
+
+{% block page_title %}{{ post.title }} | Поколения АП{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="/static/css/post.css"/>
+{% endblock %}
+
+{% block page_content %}
+    {% if post %}
+        <div class="row">
+            <div class="col s12 m8 offset-m2">
+                <div class="card grey lighten-5">
+                    <div class="card-content grey lighten-5 black-text">
+                        <span class="card-title" id="article-title">{{ post.title }}</span>
+                        <br/>
+                        <p id="article-content">{{ post.body|replace('\n', '<br>')|safe }}</p>
+                    </div>
+                    <div class="card-action grey-text">
+                        <div>
+                            Автор публикации: {{ post.authorParent.user }}
+                        </div>
+                        <div class="translate-btn" id="translate-btn">
+                            🌐
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="row not-found">
+            <div class="col s12 m6 offset-m3 black-text center-align">
+                <i class="material-icons large">sentiment_dissatisfied</i>
+                <h5 class="light">Публикация не найдена!</h5>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/js/post.js"></script>
+{% endblock %}

@@ -27,7 +27,7 @@
                             <p>{{ post.body[:250]|replace('\n', '<br>')|safe }}...</p>
                         </div>
                         <div class="card-action">
-                            <a class="purple-text">Читать полностью</a>
+                            <a class="purple-text" href="/post?id={{ post.id }}">Читать полностью</a>
                         </div>
                     </div>
                 </div>

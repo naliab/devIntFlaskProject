@@ -1,0 +1,18 @@
+p {
+    text-align: justify;
+}
+
+.card-action {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.translate-btn {
+    cursor: pointer;
+}
+
+.not-found {
+    margin-top: 75px;
+}
