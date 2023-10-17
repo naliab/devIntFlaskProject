@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_paginate import Pagination
 from database import *
 from googletrans import Translator
+from sqlalchemy import text
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:12345678@localhost:3306/flask'
@@ -60,6 +61,16 @@ def translate():
     body_result = translator.translate(body, dest=target_lang)
 
     return jsonify({'title_translation': title_result.text, 'txt_translation': body_result.text})
+
+
+@app.cli.command('load_data')
+def load_data():
+    with open('SQL_Scripts/Upload.sql', 'r', encoding='utf-8') as file:
+        stmts = file.read().split(';')
+        for stmt in stmts:
+            if stmt.strip():
+                db.session.execute(text(stmt))
+                db.session.commit()
 
 
 if __name__ == '__main__':
