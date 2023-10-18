@@ -1,0 +1,38 @@
+{% extends 'base_template.html' %}
+
+{% block page_title %}Регистрация пользователя | Блог АП{% endblock %}
+
+{% block styles %}
+<!-- <link rel="stylesheet" href="/static/css/register.css" /> -->
+{% endblock %}
+
+{% block page_content %}
+<div class="row">
+    <div class="col s12 m6 offset-m3">
+        <div class="card hoverable grey lighten-5">
+            <div class="card-content black-text text-lighten-2">
+                <span class="card-title">Регистрация</span>
+                <form method="POST">
+                    <input type="text" placeholder="Логин" name="user" maxlength="150" autocapitalize="none"
+                        autocomplete="user" autofocus required class="black-text" />
+                    <input type="password" placeholder="Пароль" name="password" autocomplete="password" required
+                        class="black-text" />
+                    <input type="password" placeholder="Повторите пароль" name="password2" autocomplete="password2"
+                        required class="black-text" />
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <div class="notification red-text">
+                        {{ messages[0] }}
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+                    <div class="reg-actions">
+                        <button class="btn purple white-text" type="submit">Зарегистрироваться!</button>
+                        <a href="/login" class="purple-text">У меня уже есть аккаунт!</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

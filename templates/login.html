@@ -1,0 +1,38 @@
+{% extends 'base_template.html' %}
+
+{% block page_title %}Авторизация пользователя | Блог АП{% endblock %}
+
+{% block styles %}
+<!-- <link rel="stylesheet" href="/static/css/login.css" /> -->
+{% endblock %}
+
+{% block page_content %}
+<div class="row">
+    <div class="col s12 m6 offset-m3">
+        <div class="card hoverable grey lighten-5">
+            <div class="card-content black-text">
+                <span class="card-title">Авторизация</span>
+                <form method="POST">
+                    <input type="text" placeholder="Логин" name="user" autofocus autocapitalize="none"
+                        autocomplete="user" maxlength="150" required class="black-text">
+                    <input type="password" placeholder="Пароль" name="password" autocomplete="current-password" required
+                        class="black-text">
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <div class="notification red-text">
+                        {{ messages[0] }}
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+                    <div class="reg-actions">
+                        <div id="login_error_txt" class="red-text"></div>
+                        <button class="btn purple white-text" type="submit">Войти</button>
+                        <a href="/register" class="purple-text">Завести свой аккаунт</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
