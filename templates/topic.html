@@ -1,0 +1,40 @@
+{% extends 'base_template.html' %}
+
+{% block page_title %}Тематические посты{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col s12 m6 offset-m3">
+            <h6 class="purple-text light valign-wrapper">
+                <i class="material-icons small">filter_list</i><b>Категория:
+                {% if topic %}{{ topic.title }}{% else %}не существует!{% endif %}</b>
+            </h6>
+        </div>
+    </div>
+    {% if posts|length > 0 %}
+        {% for post in posts %}
+            <div class="row">
+                <div class="col s12 m6 offset-m3">
+                    <div class="card grey lighten-5 hoverable">
+                        <div class="card-content black-text">
+                            <span class="card-title">{{ post.title }}</span>
+                            <span class="grey-text">Автор: {{ post.authorParent.user }}</span>
+                            <br/><br/>
+                            <p>{{ post.body[:250]|replace('\n', '<br>')|safe }}</p>
+                        </div>
+                        <div class="card-action">
+                            <a class="purple-text" href="/post?id={{ post.id }}">Читать полностью</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="row">
+            <div class="col s12 m6 offset-m3 black-text center-align">
+                <i class="material-icons large">sentiment_dissatisfied</i>
+                <h5 class="light">Нет публикаций. Здесь пусто...</h5>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
