@@ -19,5 +19,7 @@ services:
     environment:
       - DB_HOST=db
       - DB_PORT=3306
+    command:
+      - '--local-infile=1'
     depends_on:
       - db
