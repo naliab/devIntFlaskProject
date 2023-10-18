@@ -9,6 +9,8 @@ services:
       - MYSQL_TCP_PORT=3306
     ports:
       - "3306:3306"
+    command:
+      - '--local-infile=1'
 
   flask:
     build:
@@ -19,7 +21,5 @@ services:
     environment:
       - DB_HOST=db
       - DB_PORT=3306
-    command:
-      - '--local-infile=1'
     depends_on:
       - db
