@@ -5,9 +5,22 @@ from flask_paginate import Pagination
 from database import *
 from googletrans import Translator
 from sqlalchemy import text
+import os
+
+DB_USER = 'root'
+DB_PASSWORD = '12345678'
+DB_HOST = 'localhost'
+DB_PORT = '3306'
+
+if 'DB_HOST' in os.environ.keys():
+    DB_HOST = os.environ.get('DB_HOST')
+if 'DB_PORT' in os.environ.keys():
+    DB_PORT = os.environ.get('DB_PORT')
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:12345678@localhost:3306/flask'
+app.config['SQLALCHEMY_DATABASE_URI'] = \
+    f'mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/flask'
+
 db.init_app(app)
 migrate = Migrate(app, db)
 
