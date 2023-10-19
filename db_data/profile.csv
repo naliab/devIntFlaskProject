@@ -1,2 +1,2 @@
-id;user;password;avatar
-1;admin;admin;/static/defaultAvatar.png
+id;user;password
+1;admin;admin

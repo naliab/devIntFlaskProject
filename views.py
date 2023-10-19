@@ -2,9 +2,10 @@ from flask import flash, redirect, request, jsonify, url_for
 from flask import render_template
 from flask_paginate import Pagination
 from googletrans import Translator
-from flask_login import login_required, login_user, logout_user
+from flask_login import login_required, login_user, logout_user, current_user
 from models import Profile, PostCategory, Post
 from app import db
+import shutil
 
 
 def init_views(app):
@@ -64,29 +65,30 @@ def init_views(app):
             if user.password == request.form.get("password"):
                 login_user(user)
                 return redirect(url_for("home"))
-            else: 
+            else:
                 flash('Неверный логин или пароль')
                 return render_template('login.html')
         else:
             return render_template('login.html')
 
-    @app.route('/register', methods=['GET','POST'])
+    @app.route('/register', methods=['GET', 'POST'])
     def register():
         if request.method == "POST":
             user = request.form.get("user")
             password = request.form.get("password")
             submit = request.form.get("password2")
 
-            user_profile = Profile.query.filter_by(user=user).first() 
-            if user_profile: 
+            user_profile = Profile.query.filter_by(user=user).first()
+            if user_profile:
                 flash('Пользователь уже существует')
                 return redirect(url_for('register'))
-            if password!=submit:
+            if password != submit:
                 flash('Пароли не совпадают')
                 return redirect(url_for('register'))
             new_user = Profile(user=user, password=password)
             db.session.add(new_user)
             db.session.commit()
+            shutil.copy('./static/defaultAvatar.png', f'./static/avatars/{user}.png')
             return redirect(url_for("login"))
         else:
             return render_template('register.html')
@@ -96,3 +98,11 @@ def init_views(app):
     def logout():
         logout_user()
         return redirect(url_for("login"))
+
+    @app.route('/upload_avatar', methods=['POST'])
+    @login_required
+    def upload_avatar():
+        if request.files['avatar']:
+            image = request.files['avatar']
+            image.save(f'./static/avatars/{current_user.user}.png')
+        return redirect(url_for("home"))
