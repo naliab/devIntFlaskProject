@@ -92,7 +92,7 @@
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li>
                     {% if current_user.is_authenticated %}
-                        <a class="dropdown-trigger white-text account-btn" data-target="account_menu">
+                        <a class="dropdown-trigger purple-text account-btn" data-target="account_menu">
                             <img src="/static/avatars/{{ current_user.user }}.png" class="user-avatar"/>
                             Привет, {{ current_user.user }} <b></b>!<i class="material-icons right">arrow_drop_down</i></a>
                     {% else %}
