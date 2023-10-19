@@ -6,9 +6,9 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=12345678
       - MYSQL_DATABASE=flask
-      - MYSQL_TCP_PORT=3306
+      - MYSQL_TCP_PORT=3307
     ports:
-      - "3306:3306"
+      - "3307:3307"
     command:
       - '--local-infile=1'
 
@@ -20,6 +20,6 @@ services:
       - "5000:5000"
     environment:
       - DB_HOST=db
-      - DB_PORT=3306
+      - DB_PORT=3307
     depends_on:
       - db

@@ -2,10 +2,11 @@ from flask import flash, redirect, request, jsonify, url_for
 from flask import render_template
 from flask_paginate import Pagination
 from googletrans import Translator
-from flask_login import login_required, login_user, logout_user
+from flask_login import login_required, login_user, logout_user, current_user
 from models import Profile, PostCategory, Post, PredData
 from app import db
 from ml import train_model, predict_model
+import shutil
 
 
 def init_views(app):
@@ -109,6 +110,7 @@ def init_views(app):
             new_user = Profile(user=user, password=password)
             db.session.add(new_user)
             db.session.commit()
+            shutil.copy('./static/defaultAvatar.png', f'./static/avatars/{user}.png')
             return redirect(url_for("login"))
         else:
             return render_template('register.html')
@@ -118,3 +120,11 @@ def init_views(app):
     def logout():
         logout_user()
         return redirect(url_for("login"))
+
+    @app.route('/upload_avatar', methods=['POST'])
+    @login_required
+    def upload_avatar():
+        if request.files['avatar']:
+            image = request.files['avatar']
+            image.save(f'./static/avatars/{current_user.user}.png')
+        return redirect(url_for("home"))

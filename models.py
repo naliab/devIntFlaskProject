@@ -8,7 +8,6 @@ class Profile(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     user = db.Column(db.String(64), unique=True)
     password = db.Column(db.String(256))
-    avatar = db.Column(db.String(256))
 
     def __init__(self, *args, **kwargs):
         super(Profile, self).__init__(*args, **kwargs)

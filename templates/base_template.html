@@ -59,11 +59,11 @@
 </div>
 
 <div id="uploadavatar" class="modal grey lighten-5">
-    <form id="avatar_form" method="POST" action="/upload_avatar/" enctype="multipart/form-data">
+    <form id="avatar_form" method="POST" action="/upload_avatar" enctype="multipart/form-data">
         <div class="modal-content black-text">
             <div class="current-avatar">
-                <img src=""/>
-                <div class="black-text">Отлично выглядите, {{current_user.user}}!</div>
+                <img src="/static/avatars/{{ current_user.user }}.png"/>
+                <div class="black-text">Отлично выглядите, {{ current_user.user }}!</div>
             </div>
             <div class="file-field input-field">
                 <div class="btn white-text purple">
@@ -93,8 +93,8 @@
                 <li>
                     {% if current_user.is_authenticated %}
                         <a class="dropdown-trigger white-text account-btn" data-target="account_menu">
-                            <!-- <img src="" class="user-avatar"/> -->
-                            Привет, {{current_user.user}} <b></b>!<i class="material-icons right">arrow_drop_down</i></a>
+                            <img src="/static/avatars/{{ current_user.user }}.png" class="user-avatar"/>
+                            Привет, {{ current_user.user }} <b></b>!<i class="material-icons right">arrow_drop_down</i></a>
                     {% else %}
                         <div style="display: flex">
                             <a class="white-text modal-trigger" href="#loginModal">Войти в аккаунт</a>
@@ -112,7 +112,7 @@
 <ul class="sidenav white lighten-5" id="mobile-demo">
     {% if current_user.is_authenticated %}
         <li><a class="purple-text account-btn">
-            <img src="" class="user-avatar"/>
+            <img src="/static/avatars/{{ current_user.user }}.png" class="user-avatar"/>
             <b></b>
         </a></li>
         <li>
