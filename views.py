@@ -67,17 +67,20 @@ def init_views(app):
         else:
             return render_template('login.html')
 
-    @app.route('/register', methods=['GET', 'POST'])
+    @app.route('/register', methods=['GET','POST'])
     def register():
         if request.method == "POST":
             user = request.form.get("user")
             password = request.form.get("password")
+            submit = request.form.get("password2")
 
-            user_profile = Profile.query.filter_by(user=user).first()
-            if user_profile:
+            user_profile = Profile.query.filter_by(user=user).first() 
+            if user_profile: 
                 flash('Пользователь уже существует')
                 return redirect(url_for('register'))
-
+            if password!=submit:
+                flash('Пароли не совпадают')
+                return redirect(url_for('register'))
             new_user = Profile(user=user, password=password)
             db.session.add(new_user)
             db.session.commit()
