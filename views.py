@@ -2,8 +2,9 @@ from flask import flash, redirect, request, jsonify, url_for
 from flask import render_template
 from flask_paginate import Pagination
 from googletrans import Translator
-from flask_login import  login_required, login_user, logout_user
+from flask_login import login_required, login_user, logout_user
 from models import *
+
 
 def init_views(app):
     @app.route('/', methods=['GET'])
@@ -16,7 +17,6 @@ def init_views(app):
         end_ind = start_ind + per_page
         posts_to_render = posts[start_ind:end_ind]
         return render_template('home.html', pagination=pagination, posts=posts_to_render)
-
 
     @app.route('/topic', methods=['GET'])
     def topic():
@@ -31,18 +31,15 @@ def init_views(app):
         posts_to_render = posts[start_ind:end_ind]
         return render_template('topic.html', pagination=pagination, posts=posts_to_render, topic=current_topic)
 
-
     @app.route('/post', methods=['GET'])
     def post():
         requested_id = request.args.get('id', 1, type=int)
         post = Post.query.filter_by(id=requested_id).first()
         return render_template('post.html', post=post)
 
-
     @app.route('/about', methods=['GET'])
     def about():
         return render_template('about.html')
-
 
     @app.route('/translate', methods=['POST'])
     def translate():
@@ -56,7 +53,7 @@ def init_views(app):
 
         return jsonify({'title_translation': title_result.text, 'txt_translation': body_result.text})
 
-    @app.route('/login', methods=['GET','POST'])
+    @app.route('/login', methods=['GET', 'POST'])
     def login():
         if request.method == "POST":
             user = Profile.query.filter_by(user=request.form.get("user")).first()
@@ -69,15 +66,14 @@ def init_views(app):
         else:
             return render_template('login.html')
 
-
-    @app.route('/register', methods=['GET','POST'])
+    @app.route('/register', methods=['GET', 'POST'])
     def register():
         if request.method == "POST":
             user = request.form.get("user")
             password = request.form.get("password")
 
-            user_profile = Profile.query.filter_by(user=user).first() 
-            if user_profile: 
+            user_profile = Profile.query.filter_by(user=user).first()
+            if user_profile:
                 flash('Пользователь уже существует')
                 return redirect(url_for('register'))
 

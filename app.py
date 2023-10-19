@@ -2,13 +2,12 @@ import secrets
 from flask_login import LoginManager
 
 from flask_sqlalchemy import SQLAlchemy
-secret = secrets.token_urlsafe(32)
 from flask import Flask
 from flask_migrate import Migrate
-from flask_paginate import Pagination
-from googletrans import Translator
 from sqlalchemy import text
 import os
+
+secret = secrets.token_urlsafe(32)
 
 SQL_DIR = 'db_data'
 
@@ -26,13 +25,14 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = \
     f'mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/flask?allow_local_infile=1'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # для экономии памяти
-app.secret_key = secret # Для авторизации
+app.secret_key = secret  # Для авторизации
 db = SQLAlchemy()
 db.init_app(app)
 migrate = Migrate(app, db)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.init_app(app)
+
 
 @app.cli.command('load_data')
 def load_data():
@@ -49,7 +49,9 @@ def load_data():
             ))
             db.session.commit()
 
+
 from views import init_views
+
 init_views(app)
 
 if __name__ == '__main__':
