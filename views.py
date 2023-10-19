@@ -64,6 +64,9 @@ def init_views(app):
             if user.password == request.form.get("password"):
                 login_user(user)
                 return redirect(url_for("home"))
+            else: 
+                flash('Неверный логин или пароль')
+                return render_template('login.html')
         else:
             return render_template('login.html')
 
