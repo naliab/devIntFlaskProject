@@ -71,7 +71,7 @@ def init_views(app):
             bmi = float(request.form.get('bmi'))
             children = int(request.form.get('children'))
             smoker = bool(request.form.get('smoker'))
-            charges = predict_model(age, sex, bmi, children, smoker)
+            charges = float(predict_model(age, sex, bmi, children, smoker))
             new_pred = PredData(age=age, sex=sex, bmi=bmi, children=children, smoker=smoker, charges=charges)
             db.session.add(new_pred)
             db.session.commit()
