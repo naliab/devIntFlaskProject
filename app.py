@@ -37,7 +37,7 @@ login_manager.init_app(app)
 @app.cli.command('load_data')
 def load_data():
     print('Загрузка первоначальных данных в БД...')
-    tables = ['profile', 'postcategory', 'post']
+    tables = ['profile', 'postcategory', 'post', 'traindata']
     for table_name in tables:
         file = SQL_DIR + '/' + table_name + '.csv'
         print('загрузка', file)
