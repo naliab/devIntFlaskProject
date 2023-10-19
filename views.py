@@ -3,7 +3,8 @@ from flask import render_template
 from flask_paginate import Pagination
 from googletrans import Translator
 from flask_login import login_required, login_user, logout_user
-from models import *
+from models import Profile, PostCategory, Post
+from app import db
 
 
 def init_views(app):
