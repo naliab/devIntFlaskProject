@@ -1,0 +1,98 @@
+{% extends 'base_template.html' %}
+
+{% block page_title %}Модель предсказания{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="/static/css/train_page.css"/>{% endblock %}
+{% block page_content %}
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="card grey lighten-5 hoverable">
+                    <div class="card-content black-text">
+                        <span class="card-title">Обучение модели</span>
+                        <p id="train_tip">Для начала обучите модель на имеющихся наблюдениях</p>
+                        <form method="POST" action="/train/" id="trainForm">
+                            <button id="train_btn" class="btn purple white-text" type="submit">Начать обучение
+                                модели
+                            </button>
+                            <span id="train_result" class="green-text" style="display: none">
+                                OK!
+                            </span>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="predict_block" style="display: none;">
+            <div class="col s12 m12 l12">
+                <div class="card grey lighten-5 hoverable">
+                    <div class="card-content black-text">
+                        <span class="card-title">Предсказание</span>
+                        <p id="train_tip">Введите параметры ниже</p>
+                        <form method="POST" action="/predict/" id="predictForm">
+                            <input type="number" name="age" required placeholder="Возраст">
+                            <select name="sex" style="display: block;" required>
+                                <option value="" selected>Пол</option>
+                                <option value="0">Женщина</option>
+                                <option value="1">Мужчина</option>
+                            </select>
+                            <input type="number" name="bmi" step="any" required placeholder="ИМТ">
+                            <br>
+                            <input type="number" name="children" placeholder="Кол-во детей" required>
+                            <br>
+                            <label>
+                                <input type="checkbox" name="smoker">
+                                <span>Курильщик</span>
+                            </label>
+                            <div class="reg-actions">
+                                <button class="btn purple white-text" type="submit">Предсказать!</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="predict_result_block" style="display: none;">
+            <div class="col s12 m12 l12">
+                <div class="card grey lighten-5 hoverable">
+                    <div class="card-content black-text">
+                        <span class="card-title">Результат предсказания</span>
+                        <p>Сумма страховой выплаты составляет: <b><span id="predict_result"></span></b></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('trainForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(document.getElementById('trainForm'));
+            fetch('/train', {
+                method: 'POST',
+                body: formData
+            }).then(res => res.json()).then(res => {
+                if (res.status === 'OK') {
+                    document.getElementById('train_btn').style.display = 'none';
+                    document.getElementById('train_result').style.display = 'block';
+                    document.getElementById('predict_block').style.display = 'block';
+                }
+            }).catch((e) => {
+                console.log('Ошибка при отправке формы на обучение:', e);
+            });
+        });
+        document.getElementById('predictForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(document.getElementById('predictForm'));
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            }).then(res => res.json()).then(res => {
+                document.getElementById('predict_result_block').style.display = 'block';
+                document.getElementById('predict_result').innerHTML = res.result;
+            }).catch((e) => {
+                console.log('Ошибка при отправке формы на предсказание:', e);
+            });
+        })
+    </script>
+{% endblock %}

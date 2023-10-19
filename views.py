@@ -3,8 +3,9 @@ from flask import render_template
 from flask_paginate import Pagination
 from googletrans import Translator
 from flask_login import login_required, login_user, logout_user
-from models import Profile, PostCategory, Post
+from models import Profile, PostCategory, Post, PredData
 from app import db
+from ml import train_model, predict_model
 
 
 def init_views(app):
@@ -54,6 +55,27 @@ def init_views(app):
 
         return jsonify({'title_translation': title_result.text, 'txt_translation': body_result.text})
 
+    @app.route('/train', methods=['GET', 'POST'])
+    def train():
+        if request.method == 'POST':
+            train_model()
+            return jsonify({'status': 'OK'})
+        return render_template('train_page.html')
+
+    @app.route('/predict', methods=['POST'])
+    def predict():
+        if request.method == 'POST':
+            age = int(request.form.get('age'))
+            sex = int(request.form.get('sex'))
+            bmi = float(request.form.get('bmi'))
+            children = int(request.form.get('children'))
+            smoker = bool(request.form.get('smoker'))
+            charges = predict_model(age, sex, bmi, children, smoker)
+            new_pred = PredData(age=age, sex=sex, bmi=bmi, children=children, smoker=smoker, charges=charges)
+            db.session.add(new_pred)
+            db.session.commit()
+            return jsonify({'result': "${:,.2f}".format(charges)})
+
     @app.route('/login', methods=['GET', 'POST'])
     def login():
         if request.method == "POST":
@@ -64,24 +86,24 @@ def init_views(app):
             if user.password == request.form.get("password"):
                 login_user(user)
                 return redirect(url_for("home"))
-            else: 
+            else:
                 flash('Неверный логин или пароль')
                 return render_template('login.html')
         else:
             return render_template('login.html')
 
-    @app.route('/register', methods=['GET','POST'])
+    @app.route('/register', methods=['GET', 'POST'])
     def register():
         if request.method == "POST":
             user = request.form.get("user")
             password = request.form.get("password")
             submit = request.form.get("password2")
 
-            user_profile = Profile.query.filter_by(user=user).first() 
-            if user_profile: 
+            user_profile = Profile.query.filter_by(user=user).first()
+            if user_profile:
                 flash('Пользователь уже существует')
                 return redirect(url_for('register'))
-            if password!=submit:
+            if password != submit:
                 flash('Пароли не совпадают')
                 return redirect(url_for('register'))
             new_user = Profile(user=user, password=password)
