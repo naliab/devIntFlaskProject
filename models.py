@@ -57,8 +57,10 @@ class MLData(db.Model):
 
 
 class TrainData(MLData):
+    __tablename__ = 'traindata'
     pass
 
 
-class PredictedData(MLData):
+class PredData(MLData):
+    __tablename__ = 'preddata'
     pass

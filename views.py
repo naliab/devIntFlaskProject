@@ -3,8 +3,9 @@ from flask import render_template
 from flask_paginate import Pagination
 from googletrans import Translator
 from flask_login import login_required, login_user, logout_user, current_user
-from models import Profile, PostCategory, Post
+from models import Profile, PostCategory, Post, PredData
 from app import db
+from ml import train_model, predict_model
 import shutil
 
 
@@ -54,6 +55,27 @@ def init_views(app):
         body_result = translator.translate(body, dest=target_lang)
 
         return jsonify({'title_translation': title_result.text, 'txt_translation': body_result.text})
+
+    @app.route('/train', methods=['GET', 'POST'])
+    def train():
+        if request.method == 'POST':
+            train_model()
+            return jsonify({'status': 'OK'})
+        return render_template('train_page.html')
+
+    @app.route('/predict', methods=['POST'])
+    def predict():
+        if request.method == 'POST':
+            age = int(request.form.get('age'))
+            sex = int(request.form.get('sex'))
+            bmi = float(request.form.get('bmi'))
+            children = int(request.form.get('children'))
+            smoker = bool(request.form.get('smoker'))
+            charges = predict_model(age, sex, bmi, children, smoker)
+            new_pred = PredData(age=age, sex=sex, bmi=bmi, children=children, smoker=smoker, charges=charges)
+            db.session.add(new_pred)
+            db.session.commit()
+            return jsonify({'result': "${:,.2f}".format(charges)})
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
