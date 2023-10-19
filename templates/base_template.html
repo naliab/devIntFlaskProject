@@ -62,7 +62,7 @@
     <form id="avatar_form" method="POST" action="/upload_avatar/" enctype="multipart/form-data">
         <div class="modal-content black-text">
             <div class="current-avatar">
-                <img src=""/>
+                <img src="/static/avatars/{{ current_user.user }}.png"/>
                 <div class="black-text">Отлично выглядите, {{current_user.user}}!</div>
             </div>
             <div class="file-field input-field">
@@ -93,7 +93,7 @@
                 <li>
                     {% if current_user.is_authenticated %}
                         <a class="dropdown-trigger white-text account-btn" data-target="account_menu">
-                            <!-- <img src="" class="user-avatar"/> -->
+                           <img src="/static/avatars/{{ current_user.user }}.png" class="user-avatar"/>
                             Привет, {{current_user.user}} <b></b>!<i class="material-icons right">arrow_drop_down</i></a>
                     {% else %}
                         <div style="display: flex">
@@ -112,7 +112,7 @@
 <ul class="sidenav white lighten-5" id="mobile-demo">
     {% if current_user.is_authenticated %}
         <li><a class="purple-text account-btn">
-            <img src="" class="user-avatar"/>
+            <img src="/static/avatars/{{ current_user.user }}.png" class="user-avatar"/>
             <b></b>
         </a></li>
         <li>
