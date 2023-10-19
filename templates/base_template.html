@@ -29,14 +29,13 @@
     <form id="loginModalForm" method="POST" class="modal_form">
         <div class="modal-content black-text">
             <h4>Авторизация</h4>
-            <input type="text" placeholder="Логин" name="username" autofocus autocapitalize="none"
-                   autocomplete="username" maxlength="150" required class="black-text">
+            <input type="text" placeholder="Логин" name="user" autofocus autocapitalize="none"
+                   autocomplete="user" maxlength="150" required class="black-text">
             <input type="password" placeholder="Пароль" name="password" autocomplete="current-password"
                    required class="black-text">
             <div class="reg-actions">
-                <div id="login_error_txt" class="red-text"></div>
                 <button class="btn purple white-text" type="submit">Войти</button>
-                <a href="/login/" class="purple-text">Уйти на отдельную страницу</a>
+                <a href="/login" class="purple-text">Уйти на отдельную страницу</a>
             </div>
         </div>
     </form>
@@ -52,9 +51,8 @@
             <input type="password" placeholder="Повторите пароль" name="password2"
                    autocomplete="new-password" required class="black-text"/>
             <div class="reg-actions">
-                <div id="reg_error_txt" class="red-text"></div>
                 <button class="btn purple white-text" type="submit">Зарегистрироваться!</button>
-                <a href="/register/" class="purple-text">Уйти на отдельную страницу</a>
+                <a href="/register" class="purple-text">Уйти на отдельную страницу</a>
             </div>
         </div>
     </form>
@@ -65,7 +63,7 @@
         <div class="modal-content black-text">
             <div class="current-avatar">
                 <img src=""/>
-                <div class="black-text">Отлично выглядите, !</div>
+                <div class="black-text">Отлично выглядите, {{current_user.user}}!</div>
             </div>
             <div class="file-field input-field">
                 <div class="btn white-text purple">
@@ -93,10 +91,10 @@
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li>
-                    {% if false %}
+                    {% if current_user.is_authenticated %}
                         <a class="dropdown-trigger white-text account-btn" data-target="account_menu">
-                            <img src="" class="user-avatar"/>
-                            Привет, <b></b>!<i class="material-icons right">arrow_drop_down</i></a>
+                            <!-- <img src="" class="user-avatar"/> -->
+                            Привет, {{current_user.user}} <b></b>!<i class="material-icons right">arrow_drop_down</i></a>
                     {% else %}
                         <div style="display: flex">
                             <a class="white-text modal-trigger" href="#loginModal">Войти в аккаунт</a>
@@ -112,7 +110,7 @@
     </nav>
 </div>
 <ul class="sidenav white lighten-5" id="mobile-demo">
-    {% if false %}
+    {% if current_user.is_authenticated %}
         <li><a class="purple-text account-btn">
             <img src="" class="user-avatar"/>
             <b></b>
