@@ -1,10 +1,10 @@
-import secrets
-from flask_login import LoginManager
-
-from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 from flask_migrate import Migrate
+from flask_login import LoginManager
+from flask_admin import Admin
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
+import secrets
 import os
 
 secret = secrets.token_urlsafe(32)
@@ -22,16 +22,20 @@ if 'DB_PORT' in os.environ.keys():
     DB_PORT = os.environ.get('DB_PORT')
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = secret  # для авторизации
 app.config['SQLALCHEMY_DATABASE_URI'] = \
     f'mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/flask?allow_local_infile=1'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # для экономии памяти
-app.secret_key = secret  # Для авторизации
+
 db = SQLAlchemy()
 db.init_app(app)
 migrate = Migrate(app, db)
+
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.init_app(app)
+
+admin_panel = Admin(app, name='admin_panel', template_mode='bootstrap4')
 
 
 @app.cli.command('load_data')
@@ -50,9 +54,15 @@ def load_data():
             db.session.commit()
 
 
-from views import init_views
+from views import init_views, ProfileAdmin, PostCategoryAdmin, PostAdmin, TrainDataAdmin
+from models import Profile, PostCategory, Post, TrainData
 
 init_views(app)
+
+admin_panel.add_view(ProfileAdmin(Profile, db.session))
+admin_panel.add_view(PostCategoryAdmin(PostCategory, db.session))
+admin_panel.add_view(PostAdmin(Post, db.session))
+admin_panel.add_view(TrainDataAdmin(TrainData, db.session))
 
 if __name__ == '__main__':
     app.run()

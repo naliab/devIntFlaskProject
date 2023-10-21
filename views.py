@@ -3,6 +3,7 @@ from flask import render_template
 from flask_paginate import Pagination
 from googletrans import Translator
 from flask_login import login_required, login_user, logout_user, current_user
+from flask_admin.contrib.sqla import ModelView
 from models import Profile, PostCategory, Post, PredData
 from app import db
 from ml import train_model, predict_model
@@ -128,3 +129,24 @@ def init_views(app):
             image = request.files['avatar']
             image.save(f'./static/avatars/{current_user.user}.png')
         return redirect(url_for("home"))
+
+
+class ProfileAdmin(ModelView):
+    column_list = ('id', 'user', 'password')
+    column_labels = {'id': 'ID', 'user': 'Логин', 'passwords': 'Пароль'}
+
+
+class PostCategoryAdmin(ModelView):
+    column_list = ('id', 'title')
+    column_labels = {'id': 'ID', 'title': 'Название категории'}
+
+
+class PostAdmin(ModelView):
+    column_list = ('id', 'title', 'category', 'author', 'body')
+    column_labels = {'id': 'ID', 'title': 'Заголовок', 'category': 'Категория', 'author': 'Автор', 'body': 'Текст'}
+
+
+class TrainDataAdmin(ModelView):
+    column_list = ('id', 'age', 'sex', 'bmi', 'children', 'smoker', 'charges')
+    column_labels = {'id': 'ID', 'age': 'Возраст', 'sex': 'Пол', 'bmi': 'ИМТ', 'children': 'Дети', 'smoker': 'Курит',
+                     'charges': 'Плата'}
