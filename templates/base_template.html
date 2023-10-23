@@ -34,6 +34,7 @@
             <input type="password" placeholder="Пароль" name="password" autocomplete="current-password"
                    required class="black-text">
             <div class="reg-actions">
+                <div id="login_error_txt" class="red-text"></div>
                 <button class="btn purple white-text" type="submit">Войти</button>
                 <a href="/login" class="purple-text">Уйти на отдельную страницу</a>
             </div>
@@ -62,8 +63,10 @@
     <form id="avatar_form" method="POST" action="/upload_avatar" enctype="multipart/form-data">
         <div class="modal-content black-text">
             <div class="current-avatar">
-                <img src="/static/avatars/{{ current_user.user }}.png"/>
-                <div class="black-text">Отлично выглядите, {{ current_user.user }}!</div>
+                {% if current_user.is_authenticated %}
+                    <img src="/static/avatars/{{ current_user.user }}.png"/>
+                    <div class="black-text">Отлично выглядите, {{ current_user.user }}!</div>
+                {% endif %}
             </div>
             <div class="file-field input-field">
                 <div class="btn white-text purple">

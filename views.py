@@ -82,14 +82,23 @@ def init_views(app):
         if request.method == "POST":
             user = Profile.query.filter_by(user=request.form.get("user")).first()
             if user is None:
-                flash('Неверный логин или пароль')
-                return render_template('login.html')
+                if request.form.get("fromModal"):
+                    return jsonify({'error': 'Пользователь не найден'})
+                else:
+                    flash('Неверный логин или пароль')
+                    return render_template('login.html')
             if user.password == request.form.get("password"):
                 login_user(user)
-                return redirect(url_for("home"))
+                if request.form.get("fromModal"):
+                    return jsonify({'success': 'true'})
+                else:
+                    return redirect(url_for("home"))
             else:
-                flash('Неверный логин или пароль')
-                return render_template('login.html')
+                if request.form.get("fromModal"):
+                    return jsonify({'error': 'Неправильный пароль'})
+                else:
+                    flash('Неверный логин или пароль')
+                    return render_template('login.html')
         else:
             return render_template('login.html')
 
