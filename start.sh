@@ -10,5 +10,6 @@ fi
 flask db init
 flask db migrate
 flask db upgrade
+flask create_initial_admin
 flask load_data
 flask run --host=0.0.0.0
