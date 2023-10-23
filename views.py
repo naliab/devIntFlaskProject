@@ -1,5 +1,6 @@
-from flask import flash, redirect, request, jsonify, url_for
+from flask import flash, redirect, request, jsonify, url_for, abort
 from flask import render_template
+from flask_admin import AdminIndexView
 from flask_paginate import Pagination
 from googletrans import Translator
 from flask_login import login_required, login_user, logout_user, current_user
@@ -130,6 +131,13 @@ def init_views(app):
             image = request.files['avatar']
             image.save(f'./static/avatars/{current_user.user}.png')
         return redirect(url_for("home"))
+
+
+class CustomAdminView(AdminIndexView):
+    def is_accessible(self):
+        if not current_user.is_authenticated or not current_user.is_admin:
+            abort(403)  # Запретить доступ к административной панели
+        return True
 
 
 class AdminModelView(ModelView):

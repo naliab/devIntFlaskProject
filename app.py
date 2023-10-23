@@ -43,10 +43,10 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.init_app(app)
 
-admin_panel = Admin(app, name='Админ панель', template_mode='bootstrap4')
-
-from views import init_views, ProfileAdmin, PostCategoryAdmin, PostAdmin, TrainDataAdmin
+from views import init_views, ProfileAdmin, PostCategoryAdmin, PostAdmin, TrainDataAdmin, CustomAdminView
 from models import Profile, PostCategory, Post, TrainData
+
+admin_panel = Admin(app, name='Админ панель', template_mode='bootstrap4', index_view=CustomAdminView())
 
 
 @app.cli.command('create_initial_admin')
@@ -55,6 +55,7 @@ def create_initial_admin():
     admin = Profile(id=1, user=ADMIN_USER, password=generate_password_hash(ADMIN_PASSWORD), is_admin=True)
     db.session.add(admin)
     db.session.commit()
+
 
 @app.cli.command('load_data')
 def load_data():
