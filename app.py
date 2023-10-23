@@ -4,6 +4,7 @@ from flask_login import LoginManager
 from flask_admin import Admin
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
+from werkzeug.security import generate_password_hash
 import secrets
 import os
 
@@ -16,10 +17,17 @@ DB_PASSWORD = '12345678'
 DB_HOST = 'localhost'
 DB_PORT = '3306'
 
+ADMIN_USER = 'admin'
+ADMIN_PASSWORD = 'admin'
+
 if 'DB_HOST' in os.environ.keys():
     DB_HOST = os.environ.get('DB_HOST')
 if 'DB_PORT' in os.environ.keys():
     DB_PORT = os.environ.get('DB_PORT')
+if 'ADMIN_USER' in os.environ.keys():
+    DB_PORT = os.environ.get('ADMIN_USER')
+if 'ADMIN_PASSWORD' in os.environ.keys():
+    DB_PORT = os.environ.get('ADMIN_PASSWORD')
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = secret  # для авторизации
@@ -37,11 +45,21 @@ login_manager.init_app(app)
 
 admin_panel = Admin(app, name='admin_panel', template_mode='bootstrap4')
 
+from views import init_views, ProfileAdmin, PostCategoryAdmin, PostAdmin, TrainDataAdmin
+from models import Profile, PostCategory, Post, TrainData
+
+
+@app.cli.command('create_initial_admin')
+def create_initial_admin():
+    print('Создание супер-пользователя...')
+    admin = Profile(id=1, user=ADMIN_USER, password=generate_password_hash(ADMIN_PASSWORD), is_admin=True)
+    db.session.add(admin)
+    db.session.commit()
 
 @app.cli.command('load_data')
 def load_data():
     print('Загрузка первоначальных данных в БД...')
-    tables = ['profile', 'postcategory', 'post', 'traindata']
+    tables = ['postcategory', 'post', 'traindata']
     for table_name in tables:
         file = SQL_DIR + '/' + table_name + '.csv'
         print('загрузка', file)
@@ -53,9 +71,6 @@ def load_data():
             ))
             db.session.commit()
 
-
-from views import init_views, ProfileAdmin, PostCategoryAdmin, PostAdmin, TrainDataAdmin
-from models import Profile, PostCategory, Post, TrainData
 
 init_views(app)
 

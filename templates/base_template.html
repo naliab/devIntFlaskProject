@@ -21,6 +21,9 @@
 
 
 <ul id="account_menu" class="dropdown-content grey lighten-5">
+    {% if current_user.is_admin %}
+        <li><a href="/admin" class="yellow-text">Админ панель</a></li>
+    {% endif %}
     <li><a class="modal-trigger purple-text" href="#uploadavatar">Сменить аватарку</a></li>
     <li><a href="/logout" class="purple-text">Выйти из аккаунта</a></li>
 </ul>
