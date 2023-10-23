@@ -85,14 +85,23 @@ def init_views(app):
         if request.method == "POST":
             user = Profile.query.filter_by(user=request.form.get("user")).first()
             if user is None:
-                flash('Неверный логин или пароль')
-                return render_template('login.html')
+                if request.form.get("fromModal"):
+                    return jsonify({'error': 'Пользователь не найден'})
+                else:
+                    flash('Пользователь не найден')
+                    return render_template('login.html')
             if check_password_hash(user.password, request.form.get("password")):
                 login_user(user)
-                return redirect(url_for("home"))
+                if request.form.get("fromModal"):
+                    return jsonify({'success': 'true'})
+                else:
+                    return redirect(url_for("home"))
             else:
-                flash('Неверный логин или пароль')
-                return render_template('login.html')
+                if request.form.get("fromModal"):
+                    return jsonify({'error': 'Неправильный пароль'})
+                else:
+                    flash('Неверный логин или пароль')
+                    return render_template('login.html')
         else:
             return render_template('login.html')
 
@@ -102,19 +111,19 @@ def init_views(app):
             user = request.form.get("user")
             password = request.form.get("password")
             submit = request.form.get("password2")
-
+            is_modal = True if request.form.get('fromModal') else False
             user_profile = Profile.query.filter_by(user=user).first()
             if user_profile:
                 flash('Пользователь уже существует')
-                return redirect(url_for('register'))
+                return jsonify({'error': 'Пользователь уже существует'}) if is_modal else redirect(url_for('register'))
             if password != submit:
                 flash('Пароли не совпадают')
-                return redirect(url_for('register'))
+                return jsonify({'error': 'Пароли не совпадают'}) if is_modal else redirect(url_for('register'))
             new_user = Profile(user=user, password=generate_password_hash(password))
             db.session.add(new_user)
             db.session.commit()
             shutil.copy('./static/defaultAvatar.png', f'./static/avatars/{user}.png')
-            return redirect(url_for("login"))
+            return jsonify({'success': 'true'}) if is_modal else redirect(url_for("login"))
         else:
             return render_template('register.html')
 
