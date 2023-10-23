@@ -1,8 +1,11 @@
-from flask import flash, redirect, request, jsonify, url_for
+from flask import flash, redirect, request, jsonify, url_for, abort
 from flask import render_template
+from flask_admin import AdminIndexView
 from flask_paginate import Pagination
 from googletrans import Translator
 from flask_login import login_required, login_user, logout_user, current_user
+from flask_admin.contrib.sqla import ModelView
+from werkzeug.security import generate_password_hash, check_password_hash
 from models import Profile, PostCategory, Post, PredData
 from app import db
 from ml import train_model, predict_model
@@ -85,9 +88,9 @@ def init_views(app):
                 if request.form.get("fromModal"):
                     return jsonify({'error': 'Пользователь не найден'})
                 else:
-                    flash('Неверный логин или пароль')
+                    flash('Пользователь не найден')
                     return render_template('login.html')
-            if user.password == request.form.get("password"):
+            if check_password_hash(user.password, request.form.get("password")):
                 login_user(user)
                 if request.form.get("fromModal"):
                     return jsonify({'success': 'true'})
@@ -116,7 +119,7 @@ def init_views(app):
             if password != submit:
                 flash('Пароли не совпадают')
                 return jsonify({'error': 'Пароли не совпадают'}) if is_modal else redirect(url_for('register'))
-            new_user = Profile(user=user, password=password)
+            new_user = Profile(user=user, password=generate_password_hash(password))
             db.session.add(new_user)
             db.session.commit()
             shutil.copy('./static/defaultAvatar.png', f'./static/avatars/{user}.png')
@@ -137,3 +140,36 @@ def init_views(app):
             image = request.files['avatar']
             image.save(f'./static/avatars/{current_user.user}.png')
         return redirect(url_for("home"))
+
+
+class CustomAdminView(AdminIndexView):
+    def is_accessible(self):
+        if not current_user.is_authenticated or not current_user.is_admin:
+            abort(403)  # Запретить доступ к административной панели
+        return True
+
+
+class AdminModelView(ModelView):
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.is_admin
+
+
+class ProfileAdmin(AdminModelView):
+    column_list = ('id', 'user', 'password')
+    column_labels = {'id': 'ID', 'user': 'Логин', 'passwords': 'Пароль'}
+
+
+class PostCategoryAdmin(AdminModelView):
+    column_list = ('id', 'title')
+    column_labels = {'id': 'ID', 'title': 'Название категории'}
+
+
+class PostAdmin(AdminModelView):
+    column_list = ('id', 'title', 'category', 'author', 'body')
+    column_labels = {'id': 'ID', 'title': 'Заголовок', 'category': 'Категория', 'author': 'Автор', 'body': 'Текст'}
+
+
+class TrainDataAdmin(AdminModelView):
+    column_list = ('id', 'age', 'sex', 'bmi', 'children', 'smoker', 'charges')
+    column_labels = {'id': 'ID', 'age': 'Возраст', 'sex': 'Пол', 'bmi': 'ИМТ', 'children': 'Дети', 'smoker': 'Курит',
+                     'charges': 'Плата'}

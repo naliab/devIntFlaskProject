@@ -14,3 +14,4 @@ Werkzeug==2.3.0
 numpy
 pandas
 scikit-learn
+flask-admin
