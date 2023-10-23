@@ -123,6 +123,7 @@ def init_views(app):
             db.session.add(new_user)
             db.session.commit()
             shutil.copy('./static/defaultAvatar.png', f'./static/avatars/{user}.png')
+            flash('Успешная регистрация')
             return jsonify({'success': 'true'}) if is_modal else redirect(url_for("login"))
         else:
             return render_template('register.html')
