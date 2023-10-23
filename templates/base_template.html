@@ -45,13 +45,14 @@
     <form id="registerModalForm" method="POST">
         <div class="modal-content black-text">
             <h4>Регистрация</h4>
-            <input type="text" placeholder="Логин" name="username" maxlength="150" autocapitalize="none"
-                   autocomplete="username" autofocus required class="black-text"/>
-            <input type="password" placeholder="Пароль" name="password1" autocomplete="new-password"
+            <input type="text" placeholder="Логин" name="user" maxlength="150" autocapitalize="none"
+                   autocomplete="user" autofocus required class="black-text"/>
+            <input type="password" placeholder="Пароль" name="password" autocomplete="new-password"
                    required class="black-text"/>
             <input type="password" placeholder="Повторите пароль" name="password2"
                    autocomplete="new-password" required class="black-text"/>
             <div class="reg-actions">
+                <div id="reg_error_txt" class="red-text"></div>
                 <button class="btn purple white-text" type="submit">Зарегистрироваться!</button>
                 <a href="/register" class="purple-text">Уйти на отдельную страницу</a>
             </div>

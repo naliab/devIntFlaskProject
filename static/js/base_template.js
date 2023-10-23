@@ -9,21 +9,15 @@ $('#send_new_avatar_btn').click(function () {
 document.getElementById('registerModalForm').addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(document.getElementById('registerModalForm'));
-    fetch('/register_from_modal/', {
+    formData.set('fromModal', 'true');
+    fetch('/register', {
         method: 'POST', body: formData
     })
         .then(res => res.json()).then(res => {
-        if (res.status === 'OK') {
-            window.alert('Регистрация успешно выполнена! Можно входить в свой новый аккаунт!');
-            window.location.reload();
+        if (!res.error) {
+            window.location.href = '/login';
         } else {
-            switch (res.error) {
-                case 'password_mismatch':
-                    document.getElementById('reg_error_txt').innerHTML = 'Пароли не совпадают!';
-                    break;
-                default:
-                    document.getElementById('reg_error_txt').innerHTML = res.error;
-            }
+            document.getElementById('reg_error_txt').innerHTML = res.error;
         }
     })
         .catch((e) => {
@@ -37,8 +31,7 @@ document.getElementById('loginModalForm').addEventListener('submit', (e) => {
     fetch('/login', {
         method: 'POST', body: formData
     })
-        .then(async res => res.json()
-        ).then(res => {
+        .then(async res => res.json()).then(res => {
         if (!res.error) {
             window.location.reload();
         } else {
@@ -48,8 +41,7 @@ document.getElementById('loginModalForm').addEventListener('submit', (e) => {
         .catch((e) => {
             console.error('Произошла ошибка при отправке формы:', e);
         });
-})
-;
+});
 
 function jumpToPage(num) {
     const current_location = window.location.href;

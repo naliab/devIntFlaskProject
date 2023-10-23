@@ -108,19 +108,19 @@ def init_views(app):
             user = request.form.get("user")
             password = request.form.get("password")
             submit = request.form.get("password2")
-
+            is_modal = True if request.form.get('fromModal') else False
             user_profile = Profile.query.filter_by(user=user).first()
             if user_profile:
                 flash('Пользователь уже существует')
-                return redirect(url_for('register'))
+                return jsonify({'error': 'Пользователь уже существует'}) if is_modal else redirect(url_for('register'))
             if password != submit:
                 flash('Пароли не совпадают')
-                return redirect(url_for('register'))
+                return jsonify({'error': 'Пароли не совпадают'}) if is_modal else redirect(url_for('register'))
             new_user = Profile(user=user, password=password)
             db.session.add(new_user)
             db.session.commit()
             shutil.copy('./static/defaultAvatar.png', f'./static/avatars/{user}.png')
-            return redirect(url_for("login"))
+            return jsonify({'success': 'true'}) if is_modal else redirect(url_for("login"))
         else:
             return render_template('register.html')
 
