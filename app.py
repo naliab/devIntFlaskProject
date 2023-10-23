@@ -43,7 +43,7 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.init_app(app)
 
-admin_panel = Admin(app, name='admin_panel', template_mode='bootstrap4')
+admin_panel = Admin(app, name='Админ панель', template_mode='bootstrap4')
 
 from views import init_views, ProfileAdmin, PostCategoryAdmin, PostAdmin, TrainDataAdmin
 from models import Profile, PostCategory, Post, TrainData
