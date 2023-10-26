@@ -54,3 +54,15 @@ input[type=password]:not(.browser-default):focus:not([readonly]) {
     vertical-align: middle;
     cursor: pointer;
 }
+
+.search-bar {
+    width: 28% !important;
+    color: white !important;
+    float: right !important;
+    border-bottom: none !important;
+    background: #ab47bc !important;
+    border-radius: 8px !important;
+    padding: 0 12px !important;
+    margin-top: 10px !important;
+    margin-right: 12px !important;
+}

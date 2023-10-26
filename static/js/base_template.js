@@ -57,3 +57,10 @@ function jumpToPage(num) {
         window.location.href = `${current_location}?page=${num}`;
     }
 }
+
+document.getElementById('search_bar').addEventListener('keydown', (key) => {
+    const query = document.getElementById('search_bar').value;
+    if (key.code.toLowerCase() === 'enter' && query) {
+        window.location.href = `/search?query=${query}`;
+    }
+});
