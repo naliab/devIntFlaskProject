@@ -25,6 +25,7 @@ class PostCategory(db.Model):
 
 class Post(db.Model):
     __tablename__ = 'post'
+    __searchable__ = ['title', 'body']
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200))
     category = db.Column(db.Integer, db.ForeignKey("postcategory.id"))

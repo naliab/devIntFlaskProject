@@ -43,6 +43,18 @@ def init_views(app):
         post = Post.query.filter_by(id=requested_id).first()
         return render_template('post.html', post=post)
 
+    @app.route('/search', methods=['GET'])
+    def search():
+        key = request.args.get('query')
+        posts = Post.query.msearch(key, fields=['title', 'body'])
+        page = request.args.get('page', 1, type=int)
+        per_page = 3
+        pagination = Pagination(page=page, total=len(posts), per_page=per_page)
+        start_ind = (page - 1) * per_page
+        end_ind = start_ind + per_page
+        posts_to_render = posts[start_ind:end_ind]
+        return render_template('search.html', pagination=pagination, posts=posts_to_render, query=key)
+
     @app.route('/about', methods=['GET'])
     def about():
         return render_template('about.html')

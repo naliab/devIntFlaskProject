@@ -3,6 +3,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_admin import Admin
 from flask_sqlalchemy import SQLAlchemy
+from flask_msearch import Search
 from sqlalchemy import text
 from werkzeug.security import generate_password_hash
 import secrets
@@ -42,6 +43,13 @@ migrate = Migrate(app, db)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.init_app(app)
+
+search = Search(app)
+search.init_app(app)
+search.create_index(update=True)
+MSEARCH_INDEX_NAME =  os.path.join(app.root_path,'msearch')
+MSEARCH_PRIMARY_KEY = 'id'
+MSEARCH_ENABLE = True
 
 from views import init_views, ProfileAdmin, PostCategoryAdmin, PostAdmin, TrainDataAdmin, CustomAdminView
 from models import Profile, PostCategory, Post, TrainData
