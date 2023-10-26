@@ -15,4 +15,3 @@ numpy
 pandas
 scikit-learn
 flask-admin
-flask-msearch

@@ -6,6 +6,7 @@ from googletrans import Translator
 from flask_login import login_required, login_user, logout_user, current_user
 from flask_admin.contrib.sqla import ModelView
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy import or_
 from models import Profile, PostCategory, Post, PredData
 from app import db
 from ml import train_model, predict_model
@@ -46,7 +47,7 @@ def init_views(app):
     @app.route('/search', methods=['GET'])
     def search():
         key = request.args.get('query')
-        posts = Post.query.msearch(key, fields=['title', 'body'])
+        posts = Post.query.filter(or_(Post.title.like("%"+key+"%"), Post.body.like("%"+key+"%"))).all()
         page = request.args.get('page', 1, type=int)
         per_page = 3
         pagination = Pagination(page=page, total=len(posts), per_page=per_page)
