@@ -60,7 +60,7 @@ function jumpToPage(num) {
 
 document.getElementById('search_bar').addEventListener('keydown', (key) => {
     const query = document.getElementById('search_bar').value;
-    if (key.code.toLowerCase() === 'enter' && query) {
+    if (key.code.toLowerCase() === 'enter' && query && query.replace(/ /gi, '').length) {
         window.location.href = `/search?query=${query}`;
     }
 });
