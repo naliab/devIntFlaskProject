@@ -56,7 +56,7 @@ input[type=password]:not(.browser-default):focus:not([readonly]) {
 }
 
 .search-bar {
-    width: 28% !important;
+    width: calc(100% - 720px) !important;
     color: white !important;
     float: right !important;
     border-bottom: none !important;
